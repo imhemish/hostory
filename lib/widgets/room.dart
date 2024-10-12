@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hostory/individual_room.dart';
 
-double calculateLeft(double width) {
-  return ((width - 16) / ((width - 16) ~/ 200)) /2;
-}
-
 class Room extends StatelessWidget {
   final int number;
   Room(this.number);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -15,19 +12,25 @@ class Room extends StatelessWidget {
           MaterialPageRoute(builder: (context) => IndividualRoomPage(number))),
       child: Stack(
         children: [
-          Image.asset("room.png"),
+          Image.asset("assets/room.png"),
           Positioned(
-            top: 40,
-            left: calculateLeft(MediaQuery.sizeOf(context).width),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.deepPurple, // Set color here
-                
-                borderRadius: BorderRadius.circular(40),
+            top: 50, // Adjust as needed
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  " ${number.toString()} ",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-              child: Text(" ${number.toString()} ", style: TextStyle(color: Colors.white),),
             ),
-          )
+          ),
         ],
       ),
     );
