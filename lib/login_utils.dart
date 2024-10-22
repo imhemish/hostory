@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hostory/home.dart';
 
 class _Login {
   static Future<UserCredential?> _loginWithGoogleOnWeb() async {
@@ -51,7 +52,10 @@ class LoginController {
   static void login(BuildContext context) async {
     var cred = await _Login.loginWithGoogle();
     if (cred != null && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Authentication Failed")));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+    } else if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Authentication Failed")));
     }
+    
   }
 }

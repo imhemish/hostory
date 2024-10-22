@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hostory/dashboard.dart';
 import 'package:hostory/rooms.dart';
+import 'package:hostory/store.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  List<Widget> pages = [Rooms(), Dashboard()];
+  List<Widget> pages = [Rooms(), Dashboard(), Store()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

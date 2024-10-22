@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:hostory/add_room.dart';
-import 'package:hostory/items.dart';
-import 'db.dart';
+import 'package:hostory/db.dart';
+import 'items.dart';
 
-class IndividualRoomPage extends StatefulWidget {
-  final int number;
-  IndividualRoomPage(this.number);
-
+class Store extends StatefulWidget {
   @override
-  State<IndividualRoomPage> createState() => _IndividualRoomPageState();
+  State<Store> createState() => _StoreState();
 }
 
-class _IndividualRoomPageState extends State<IndividualRoomPage> {
+class _StoreState extends State<Store> {
   List<int> counts = List.generate(items.length, (index) => 0);
+
   RoomDetails? roomDetails;
+
   bool loading = true;
 
-  Future<void> _loadRoomDetails(int roomNumber) async {
-    var result = await Database.getRoomDetails(roomNumber);
+  Future<void> _loadStoreDetails() async {
+    var result = await Database.getStoreDetails();
     if (result.$1 != null) {
       setState(() {
         loading = false;
@@ -33,10 +31,10 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
   @override
   void initState() {
     loading = true;
-    _loadRoomDetails(widget.number);
+    _loadStoreDetails();
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     double imageWidth = MediaQuery.sizeOf(context).width / 6;
@@ -45,13 +43,11 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
     if (loading == false) {
     
     return Scaffold(
-      appBar: AppBar(title: Text("Room ${widget.number}"), actions: [IconButton(onPressed: () {
-        Database.deleteRoom(widget.number).then((value) => Navigator.of(context).pop());
-        }, icon: Icon(Icons.delete))],),
+      appBar: AppBar(title: const Text("Store")),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -73,7 +69,7 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
                               var currentItemCount = roomDetails!.counts[itemName]!;
 
                               () async {
-                                var result = await Database.setRoomItem(widget.number, items[index], currentItemCount, currentItemCount+1);
+                                var result = await Database.increaseStoreItem(items[index], 1);
                                 if (result.$1) {
                                   setState(() {
                                     roomDetails!.counts[itemName] = currentItemCount+1;
@@ -102,7 +98,7 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
                               }
 
                               () async {
-                                var result = await Database.setRoomItem(widget.number, items[index], currentItemCount, currentItemCount-1);
+                                var result = await Database.decreaseStoreItem(items[index], 1);
                                 if (result.$1) {
                                   setState(() {
                                     roomDetails!.counts[itemName] = currentItemCount-1;
@@ -120,10 +116,7 @@ class _IndividualRoomPageState extends State<IndividualRoomPage> {
                       ),
                     ],
                   );
-                })+
-                [
-                  Text("Residents: ${roomDetails?.residents.join(" ")}"),
-                ],
+                }),
               ),
             ),
           ),

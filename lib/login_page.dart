@@ -8,8 +8,8 @@ class LoginPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          const Text("Login With Google"),
-          Center(child: ElevatedButton(child: Image.asset("assets/google.png", width: 35,), onPressed: () => LoginController.login(context) )),
+          Text("Login With Google", style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white: Colors.black, fontSize: 20),),
+          Center(child: ElevatedButton(child: Image.asset("assets/google.webp", width: 35,), onPressed: () => LoginController.login(context) )),
         ],
       ),
     );
